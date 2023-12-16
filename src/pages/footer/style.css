@@ -1,14 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+
 #footer {
-  background-color: transparent;
+  background-color: #121C1E;
+  margin: 10px auto;
+}
+
+#footer-container{
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  margin: 10px auto;
+  align-items: center;
   width: 100%;
-  padding: 1em;
+  max-width: 1600px;
+
+  margin: 10px auto;
   text-align: center;
 }
-
 
 #footer_rs {
   display: block;
@@ -22,14 +31,13 @@
 
 #footer_gh {
   display: block;
-  min-width: 62px;
-  min-height: 24px;
+  min-width: 50px;
+  height: 50px;
   background-image: url(../../assets/footer/github.svg);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
-
 #reserved_footer {
   align-items: center;
   display: flex;
@@ -37,6 +45,5 @@
   line-height: 27px;
   text-decoration: none;
   margin-right: 50px;
-  color: #30c5ff;
-  font-family: Arial, serif;
+  color: #fff;
 }

@@ -8,10 +8,16 @@ class Footer {
     this.container.id = id;
   }
 
-  private addFooterContainerToFooter() {
+  private addFooterToFooter() {
     const footerContainer = document.createElement("div");
     footerContainer.id = "footer";
     return footerContainer;
+  }
+
+  private addFooterContainerToHeader() {
+    const headerContainer = document.createElement("div");
+    headerContainer.id = "footer-container";
+    return headerContainer;
   }
 
   private addLinkToRSFooter() {
@@ -41,9 +47,11 @@ class Footer {
     const linkRS = this.addLinkToRSFooter();
     const reserved = this.addReservedToFooter();
     const linkGH = this.addLinkToGHFooter();
-    const footerContainer = this.addFooterContainerToFooter();
-    this.container.append(footerContainer);
-    footerContainer.append(linkRS, reserved, linkGH);
+    const footer = this.addFooterToFooter();
+    const footerContainer = this.addFooterContainerToHeader();
+    this.container.append(footer);
+    footer.append(footerContainer);
+    footerContainer.append(linkRS, reserved, linkGH)
     return this.container;
   }
 }
