@@ -1,7 +1,7 @@
 import "./style.css";
 
 class Footer {
-  private container: HTMLElement;
+  private readonly container: HTMLElement;
 
   constructor(id: string) {
     this.container = document.createElement("div");
@@ -51,7 +51,7 @@ class Footer {
     const footerContainer = this.addFooterContainerToHeader();
     this.container.append(footer);
     footer.append(footerContainer);
-    footerContainer.append(linkRS, reserved, linkGH)
+    footerContainer.append(linkRS, reserved, linkGH);
     return this.container;
   }
 }

@@ -1,7 +1,7 @@
 import "./style.css";
 
 class Header {
-  private container: HTMLElement;
+  private readonly container: HTMLElement;
 
   constructor(id: string) {
     this.container = document.createElement("div");
