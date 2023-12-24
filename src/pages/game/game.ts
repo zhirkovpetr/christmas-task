@@ -1,175 +1,157 @@
 import "./style.css";
-import { Components } from "../../core/templates/components";
+import { Page } from "../../core/templates/pages";
 
-export class Main extends Components {
+export class Game extends Page {
+  renderWrapper() {
+    const ribbonCont = document.querySelector(".links:nth-child(2)");
+    ribbonCont.className = "links";
+
+    const ribbonCont2 = document.querySelector(".links:nth-child(3)");
+    ribbonCont2.className = "links active-link";
+  }
+
   render(): HTMLElement {
+    this.renderWrapper();
     return this.container;
   }
 }
 
 /*class Main {
   private readonly container: HTMLElement;
-
   constructor(className: string) {
     this.container = document.createElement("div");
     this.container.className = className;
   }
-
   private addMainToMain() {
     const main = document.createElement("div");
     main.className = "main page";
     return main;
   }
-
   private addBlurToMain() {
     const blur = document.createElement("div");
     blur.className = "blur";
     return blur;
   }
-
   private addControlsToMain() {
     const control = document.createElement("div");
     control.className = "controls";
     return control;
   }
-
   private addFiltersToMain() {
     const filters = document.createElement("div");
     filters.className = "filters";
     return filters;
   }
-
   private addRangeToMain() {
     const range = document.createElement("div");
     range.className = "range";
     return range;
   }
-
   private addSortToMain() {
     const sort = document.createElement("div");
     sort.className = "sort";
     return sort;
   }
-
   private addControlsTitleToMain(name: string) {
     const controlsTitle = document.createElement("div");
     controlsTitle.className = "controls-title";
     controlsTitle.textContent = `${name}`;
     return controlsTitle;
   }
-
   private addShapeToMain() {
     const shape = document.createElement("div");
     shape.className = "shape";
     shape.textContent = "Форма: ";
     return shape;
   }
-
   private addButtonBallToMain() {
     const buttonBall = document.createElement("button");
     buttonBall.className = "ball";
     return buttonBall;
   }
-
   private addButtonBellToMain() {
     const buttonBell = document.createElement("button");
     buttonBell.className = "bell";
     return buttonBell;
   }
-
   private addButtonConeToMain() {
     const buttonCone = document.createElement("button");
     buttonCone.className = "cone";
     return buttonCone;
   }
-
   private addButtonSnowflakeToMain() {
     const buttonSnowflake = document.createElement("button");
     buttonSnowflake.className = "snowflake";
     return buttonSnowflake;
   }
-
   private addButtonFigureToMain() {
     const buttonStatuette = document.createElement("button");
     buttonStatuette.className = "figure";
     return buttonStatuette;
   }
-
   private addColorToMain() {
     const color = document.createElement("div");
     color.className = "color";
     color.textContent = "цвет: ";
     return color;
   }
-
   private addButtonWhiteToMain() {
     const buttonWhite = document.createElement("button");
     buttonWhite.className = "button-white";
     return buttonWhite;
   }
-
   private addButtonYellowToMain() {
     const buttonYellow = document.createElement("button");
     buttonYellow.className = "button-yellow";
     return buttonYellow;
   }
-
   private addButtonRedToMain() {
     const buttonRed = document.createElement("button");
     buttonRed.className = "button-red";
     return buttonRed;
   }
-
   private addButtonBlueToMain() {
     const buttonBlue = document.createElement("button");
     buttonBlue.className = "button-blue";
     return buttonBlue;
   }
-
   private addButtonGreenToMain() {
     const buttonGreen = document.createElement("button");
     buttonGreen.className = "button-green";
     return buttonGreen;
   }
-
   private addSizeToMain() {
     const size = document.createElement("div");
     size.className = "size";
     size.textContent = "Размер: ";
     return size;
   }
-
   private addButtonBigToMain() {
     const buttonBig = document.createElement("button");
     buttonBig.className = "button-big";
     return buttonBig;
   }
-
   private addButtonMeddleToMain() {
     const buttonMeddle = document.createElement("button");
     buttonMeddle.className = "button-meddle";
     return buttonMeddle;
   }
-
   private addButtonLowToMain() {
     const buttonLow = document.createElement("button");
     buttonLow.className = "button-low";
     return buttonLow;
   }
-
   private addFavoriteContainerToMain() {
     const favoriteContainer = document.createElement("div");
     favoriteContainer.className = "favorite-container";
     favoriteContainer.textContent = "Только любимые: ";
     return favoriteContainer;
   }
-
   private addFormGroupToMain() {
     const formGroup = document.createElement("div");
     formGroup.className = "form-group";
     return formGroup;
   }
-
   private addFavoriteInputToMain() {
     const favoriteInput = document.createElement("input");
     favoriteInput.className = "favorite-input";
@@ -177,38 +159,32 @@ export class Main extends Components {
     favoriteInput.type = "checkbox";
     return favoriteInput;
   }
-
   private addFavoriteInputLabelToMain() {
     const favoriteInputLabel = document.createElement("label");
     favoriteInputLabel.className = "favorite-input-label";
     return favoriteInputLabel;
   }
-
   private addCountToMain() {
     const count = document.createElement("div");
     count.className = "count";
     return count;
   }
-
   private addYearToMain() {
     const year = document.createElement("div");
     year.className = "year";
     return year;
   }
-
   private addSortSelectToMain() {
     const sortSelect = document.createElement("select");
     sortSelect.className = "sort-select";
     return sortSelect;
   }
-
   private addResetToMain() {
     const reset = document.createElement("button");
     reset.className = "reset";
     reset.textContent = "сброс фильтров";
     return reset;
   }
-
   private addSortNameMaxToMain() {
     const sortNameMax = document.createElement("option");
     sortNameMax.value = "sort-name-max";
@@ -216,66 +192,56 @@ export class Main extends Components {
     sortNameMax.textContent = "По названию от «А» до «Я»";
     return sortNameMax;
   }
-
   private addSortNameMinToMain() {
     const sortNameMin = document.createElement("option");
     sortNameMin.value = "sort-name-min";
     sortNameMin.textContent = "По названию от «Я» до «А»";
     return sortNameMin;
   }
-
   private addSortCountMaxToMain() {
     const sortCountMax = document.createElement("option");
     sortCountMax.value = "sort-count-max";
     sortCountMax.textContent = "По количеству по возрастанию";
     return sortCountMax;
   }
-
   private addSortCountMinToMain() {
     const sortCountMin = document.createElement("option");
     sortCountMin.value = "sort-count-min";
     sortCountMin.textContent = "По количеству по убыванию";
     return sortCountMin;
   }
-
   private addControlSpanToMain(name: string) {
     const ControlSpan = document.createElement("span");
     ControlSpan.className = "control-span";
     ControlSpan.textContent = name;
     return ControlSpan;
   }
-
   private addCountSliderContainerToMain() {
     const countSliderContainer = document.createElement("div");
     countSliderContainer.className = "count-slider-container";
     return countSliderContainer;
   }
-
   private addSliderOutputToMain(num: string) {
     const sliderOutput = document.createElement("output");
     sliderOutput.className = "slider-output";
     sliderOutput.textContent = num;
     return sliderOutput;
   }
-
   private addSliderToMain() {
     const slider = document.createElement("div");
     slider.className = "count-slider noUi-target noUi-ltr noUi-horizontal noUi-txt-dir-ltr";
     return slider;
   }
-
   private addNoUIBaseToMain() {
     const noUIBase = document.createElement("div");
     noUIBase.className = "noUI-base";
     return noUIBase;
   }
-
   private addNoUIConnectsToMain() {
     const noUIConnects = document.createElement("div");
     noUIConnects.className = "noUI-connects";
     return noUIConnects;
   }
-
   private addNoUIOriginToMain(tran: string, num: string) {
     const noUIOrigin = document.createElement("div");
     noUIOrigin.className = "noUI-origin";
@@ -283,14 +249,12 @@ export class Main extends Components {
     noUIOrigin.style.zIndex = num;
     return noUIOrigin;
   }
-
   private addNoUIConnectToMain() {
     const noUIConnect = document.createElement("div");
     noUIConnect.className = "noUI-connect";
     noUIConnect.style.transform = "translate(0%, 0px) scale(1, 1)";
     return noUIConnect;
   }
-
   private addNoUIHandleLowerToMain() {
     const noUIHandleLower = document.createElement("div");
     noUIHandleLower.className = "noUi-handle noUi-handle-lower";
@@ -302,13 +266,11 @@ export class Main extends Components {
     noUIHandleLower.ariaValueText = "1.0";
     return noUIHandleLower;
   }
-
   private addNoUITouchAreaToMain() {
     const noUITouchArea = document.createElement("div");
     noUITouchArea.className = "noUi-touch-area";
     return noUITouchArea;
   }
-
   private addNoUIHandleUpperToMain() {
     const noUIHandleUpper = document.createElement("div");
     noUIHandleUpper.className = "noUi-handle noUi-handle-upper";
@@ -320,19 +282,16 @@ export class Main extends Components {
     noUIHandleUpper.ariaValueText = "12.0";
     return noUIHandleUpper;
   }
-
   private addYearSliderContainerToMain() {
     const yearSliderContainer = document.createElement("div");
     yearSliderContainer.className = "year-slider-container";
     return yearSliderContainer;
   }
-
   private addYearSliderToMain() {
     const yearSlider = document.createElement("div");
     yearSlider.className = "year-slider noUi-target noUi-ltr noUi-horizontal noUi-txt-dir-ltr";
     return yearSlider;
   }
-
   render() {
     const sort = this.addSortToMain();
     const range = this.addRangeToMain();
@@ -397,7 +356,6 @@ export class Main extends Components {
     const OriginFirstYear = this.addNoUIOriginToMain("translate(-100%, 0px)", "5");
     const OriginSecondCount = this.addNoUIOriginToMain("translate(0%, 0px)", "4");
     const OriginSecondYear = this.addNoUIOriginToMain("translate(0%, 0px)", "4");
-
     this.container.append(main);
     main.append(blur);
     blur.append(controls);
@@ -433,4 +391,4 @@ export class Main extends Components {
   }
 }*/
 
-export default Main;
+export default Game;

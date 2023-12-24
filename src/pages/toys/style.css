@@ -1,8 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
 div {
   display: block;
 }
 
-.main {
+.main-page {
   min-width: 100%;
   min-height: calc(100vh - 140px);
   background-image: url(/src/assets/bg.jpg);
@@ -10,7 +14,7 @@ div {
   background-attachment: fixed;
 }
 
-.blur{
+.main-wrapper{
   background: rgba(22, 41, 41, 0.5);
   backdrop-filter: blur(3px);
   height: 100%;
@@ -18,7 +22,7 @@ div {
   width: 100%;
 }
 
-.controls {
+.filter {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -30,7 +34,7 @@ div {
   padding-top: 20px;
 }
 
-.filters, .range, .sort {
+.box-filters, .box-range, .box-sort {
   width: 480px;
   padding: 10px 20px;
   border-radius: 10px;
@@ -38,7 +42,7 @@ div {
   backdrop-filter: blur(6px);
 }
 
-.range {
+.box-range {
   width: 540px;
 }
 
@@ -54,32 +58,32 @@ div {
   align-items: center;
 }
 
-.shape .ball {
+.shape button:nth-child(1) {
   background-image: url(/src/assets/svg/ball.svg);
   margin-left: 20px;
 }
 
-.shape .bell {
+.shape button:nth-child(2) {
   background-image: url(/src/assets/svg/bell.svg);
   margin-left: 20px;
 }
 
-.shape .cone {
+.shape button:nth-child(3) {
   background-image: url(/src/assets/svg/cone.svg);
   margin-left: 20px;
 }
 
-.shape .snowflake {
+.shape button:nth-child(4) {
   background-image: url(/src/assets/svg/snowflake.svg);
   margin-left: 20px;
 }
 
-.shape .figure {
+.shape button:nth-child(5) {
   background-image: url(/src/assets/svg/toy.svg);
   margin-left: 20px;
 }
 
-.shape button .active {
+.shape .active {
   filter: invert(9%) sepia(63%) saturate(461%) hue-rotate(
     322deg) brightness(83%) contrast(88%);
 }
@@ -112,29 +116,29 @@ div {
   transition: .3s;
 }
 
-.color .button-white {
+.color button:nth-child(1) {
   background-color: #fff;
   margin-left: 20px;
 }
 
-.color .button-yellow {
+.color button:nth-child(2) {
   background-color: #FDD700;
 }
 
 
-.color .button-red {
+.color button:nth-child(3) {
   background-color: #FD0000;
 }
 
-.color .button-blue {
+.color button:nth-child(4) {
   background-color: #2199EB;
 }
 
-.color .button-green {
+.color button:nth-child(5) {
   background-color: #08AA05;
 }
 
-.color button.active::after {
+.color .active::after {
   content: '';
   display: block;
   position: absolute;
@@ -163,15 +167,15 @@ div {
   transition: .3s;
 }
 
-.size .button-big {
+.size button:nth-child(1) {
   margin-left: 20px;
 }
 
-.size .button-meddle {
+.size button:nth-child(2) {
   background-size: 40px 40px;
 }
 
-.size .button-low {
+.size button:nth-child(3) {
   background-size: 32px 32px;
   margin-left: 0;
 }
@@ -218,8 +222,12 @@ div {
   height: 10px;
   border: solid #fff;
   border-width: 0 4px 4px 0;
-  transform: rotate(
-    45deg);
+  transform: rotate(45deg);
+}
+
+.favorite-input:checked + .favorite-input-label {
+  background-color: #278D9F;
+  border-color: #278D9F;
 }
 
 .sort-select {
@@ -268,7 +276,7 @@ div {
   margin-bottom: 35px;
 }
 
-.year-slider-container, .count-slider-container {
+.container-for-filters, .count-slider-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -286,114 +294,107 @@ output {
   border: 1px solid #278D9F;
 }
 
-.noUi-target {
-  background: #FAFAFA;
-  border-radius: 3px;
-}
-
-.noUi-horizontal {
-  height: 18px;
-}
-
-.count-slider, .year-slider {
-  display: inline-block;
-  height: 6px;
-  width: 270px;
-}
-
-.noUi-target {
-  position: relative;
-}
-
-.noUi-base, .noUi-connects {
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
   width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-bottom: 40px;
 }
 
-.noUi-connects {
-  border-radius: 3px;
+.toys {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 304px;
+  height: 280px;
+  padding: 0 0 0 10px;
+  border-radius: 10px;
+  border: 1px solid #278D9F;
+  background-color: rgba(31, 112, 127, .3);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
 }
 
-.noUi-connects {
-  overflow: hidden;
-  z-index: 0;
+.toys-title {
+  width: 100%;
+  font-size: 20px;
+  font-stretch: condensed;
+  padding-left: 10px;
 }
 
-.noUi-origin {
-  height: 0;
+.toys-img {
+  width: 90px;
+  height: 112px;
+  object-fit: contain;
+  pointer-events: none;
 }
 
-.noUi-connect, .noUi-origin {
-  will-change: transform;
+.toys-description {
+  width: 195px;
+  margin-top: -20px;
+  padding-left: 10px;
+  pointer-events: none;
+  line-height: 1;
+  user-select: none;
+}
+
+.toys-description p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+.shape, .color, .size {
+  display: flex;
+  align-items: center;
+}
+
+.card-description p span {
+  padding-left: 7px;
+}
+
+.ribbon {
   position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  -ms-transform-origin: 0 0;
-  -webkit-transform-origin: 0 0;
-  -webkit-transform-style: preserve-3d;
-  transform-origin: 0 0;
-  transform-style: flat;
+  top: 210px;
+  width: 80px;
+  height: 40px;
+  background: #24C5DB;
+  left: -8px;
 }
 
-.noUi-connect {
-  background: #278D9F;
-}
-
-.noUi-horizontal .noUi-handle {
-  width: 22px;
-  height: 22px;
-  right: -11px;
+.ribbon:before {
+  border-bottom: 8px solid #14455b;
+  border-left: 8px solid transparent;
   top: -8px;
-  border-radius: 50%;
-  cursor: ew-resize;
 }
 
-.noUi-handle {
-  border: 1px solid #D9D9D9;
-  border-radius: 3px;
-  background: #FFF;
-  cursor: default;
-  box-shadow: inset 0 0 1px #fff, inset 0 1px 7px #ebebeb, 0 3px 6px -3px #bbb;
+.ribbon:after {
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 15px solid #24C5DB;
+  right: -15px;
 }
 
-.noUi-handle {
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  position: absolute;
-}
-
-.noUi-handle:before, .noUi-handle:after {
+.ribbon::before, .ribbon::after {
   content: "";
-  display: block;
   position: absolute;
-  height: 14px;
-  width: 1px;
-  background: transparent;
-  left: 14px;
-  top: 6px;
+  height: 0;
+  width: 0;
 }
 
-.noUi-touch-area {
-  height: 100%;
-  width: 100%;
+.ribbon.active {
+  background: #db8624;
 }
 
-.noUi-handle:after {
-  left: 17px;
-}
-
-.noUi-handle:before, .noUi-handle:after {
-  content: "";
-  display: block;
-  position: absolute;
-  height: 14px;
-  width: 1px;
-  background: transparent;
-  left: 14px;
-  top: 6px;
+.ribbon.active:after {
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 15px solid #db8624;
+  right: -15px;
 }
