@@ -1,77 +1,65 @@
 import "./style.css";
+import { Components } from "../../core/templates/components";
 
-class Header {
-  private readonly container: HTMLElement;
+interface IButtons {
+  id: string;
+  text: string;
+}
 
-  constructor(id: string) {
-    this.container = document.createElement("div");
-    this.container.id = id;
-  }
-  private addHeaderContainerToHeader() {
-    const headerContainer = document.createElement("nav");
-    headerContainer.id = "header-container";
-    return headerContainer;
-  }
-  private addNavToHeader() {
-    const nav = document.createElement("nav");
-    nav.id = "nav-bar";
-    return nav;
-  }
-  private addControlsToHeader() {
-    const controls = document.createElement("div");
-    controls.id = "header-controls";
-    return controls;
-  }
-  private addLogoToHeader() {
-    const logo = document.createElement("div");
-    logo.id = "logo";
-    return logo;
+const Buttons: IButtons[] = [
+  {
+    id: "main-page",
+    text: "",
+  },
+  {
+    id: "toys-page",
+    text: "игрушки",
+  },
+  {
+    id: "game-page",
+    text: "ёлки",
+  },
+];
+
+export class Header extends Components {
+  renderPageButtons() {
+    const pageButtons = document.createElement("div");
+    pageButtons.classList.add("navigation");
+
+    const wrapperHeader = document.createElement("div");
+    const searchAndFavorites = document.createElement("div");
+
+    const inputSearch = document.createElement("input");
+    inputSearch.classList.add("input-search");
+    inputSearch.type = "search";
+    inputSearch.name = "search";
+    inputSearch.placeholder = "Поиск";
+    inputSearch.id = "search";
+    inputSearch.autocomplete = "off";
+
+    const favorites = document.createElement("div");
+    favorites.classList.add("favorites");
+    const spanFavorites = document.createElement("span");
+    spanFavorites.innerHTML = "0";
+    favorites.append(spanFavorites)
+    searchAndFavorites.classList.add("search-favorites");
+    wrapperHeader.classList.add("wrapper");
+    wrapperHeader.append(pageButtons, searchAndFavorites);
+    searchAndFavorites.append(inputSearch, favorites);
+
+
+    Buttons.forEach((button) => {
+      const buttonHTML = document.createElement("a");
+      buttonHTML.href = `#${button.id}`;
+      buttonHTML.innerHTML = button.text;
+      buttonHTML.classList.add(`links`);
+      pageButtons.append(buttonHTML);
+    });
+    this.container.append(wrapperHeader);
   }
 
-  private addToysToHeader() {
-    const toys = document.createElement("div");
-    toys.id = "toys";
-    toys.innerText = "toys";
-    return toys;
-  }
-  private addTreeToHeader() {
-    const tree = document.createElement("div");
-    tree.id = "tree";
-    tree.innerText = "tree";
-    return tree;
-  }
-  private addSearchHeader() {
-    const search = document.createElement("input");
-    search.id = "search";
-    search.type = "search";
-    return search;
-  }
-  private addSelectToHeader() {
-    const select = document.createElement("div");
-    select.id = "select";
-    return select;
-  }
-
-  private addSpanToHeader() {
-    return document.createElement("span");
-  }
-
-  render() {
-    const nav = this.addNavToHeader();
-    const controls = this.addControlsToHeader();
-    const logo = this.addLogoToHeader();
-    const toys = this.addToysToHeader();
-    const tree = this.addTreeToHeader();
-    const search = this.addSearchHeader();
-    const select = this.addSelectToHeader();
-    const span = this.addSpanToHeader();
-    const headerContainer = this.addHeaderContainerToHeader();
-    this.container.append(headerContainer);
-    headerContainer.append(nav, controls);
-    nav.append(logo, toys, tree);
-    select.append(span);
-    controls.append(search, select);
+  render(): HTMLElement {
+    this.renderPageButtons();
     return this.container;
   }
 }
-export default Header;

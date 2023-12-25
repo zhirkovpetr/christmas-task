@@ -1,8 +1,40 @@
 import "./style.css";
-import { Components } from "../../core/templates/components";
+import { Page } from "../../core/templates/pages";
 
-export class Main extends Components {
-  render(): HTMLElement {
+export class MainPage extends Page {
+  renderWrapper() {
+    const pageStart = document.createElement("div");
+    pageStart.classList.add("start-page");
+    const ballFirst = document.createElement("div");
+    ballFirst.classList.add("ball-first");
+    const ballSecond = document.createElement("div");
+    ballSecond.classList.add("ball-second");
+    const startTitle = document.createElement("h1");
+    startTitle.classList.add("start-page-title");
+    startTitle.innerHTML = "Новогодняя игра";
+    const startSpanTitle = document.createElement("span");
+    startSpanTitle.innerHTML = "«Наряди ёлку»";
+    const startButton = document.createElement("button");
+    startButton.classList.add("switch-start-page");
+    startButton.dataset.id = "mainPage";
+    startButton.innerHTML = "Начать";
+    pageStart.append(ballFirst, ballSecond, startTitle, startButton);
+    startTitle.append(startSpanTitle);
+
+    const ribbonCont = document.querySelector(".links:nth-child(1)");
+    ribbonCont.className = "links";
+
+    const ribbonCont2 = document.querySelector(".links:nth-child(2)");
+    ribbonCont2.className = "links";
+
+    const ribbonCont3 = document.querySelector(".links:nth-child(3)");
+    ribbonCont3.className = "links";
+
+    this.container.append(pageStart);
+  }
+
+  render() {
+    this.renderWrapper();
     return this.container;
   }
 }
@@ -433,4 +465,4 @@ export class Main extends Components {
   }
 }*/
 
-export default Main;
+export default MainPage;

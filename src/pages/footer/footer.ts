@@ -1,6 +1,6 @@
 import "./style.css";
 
-class Footer {
+export class Footer {
   private readonly container: HTMLElement;
 
   constructor(id: string) {
@@ -55,5 +55,3 @@ class Footer {
     return this.container;
   }
 }
-
-export default Footer;
