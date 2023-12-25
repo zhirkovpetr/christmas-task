@@ -11,12 +11,15 @@ export class MainPage extends Page {
     ballSecond.classList.add("ball-second");
     const startTitle = document.createElement("h1");
     startTitle.classList.add("start-page-title");
-    startTitle.innerHTML = "Новогодняя игра <br> «Наряди ёлку»";
+    startTitle.innerHTML = "Новогодняя игра";
+    const startSpanTitle = document.createElement("span");
+    startSpanTitle.innerHTML = "«Наряди ёлку»";
     const startButton = document.createElement("button");
     startButton.classList.add("switch-start-page");
     startButton.dataset.id = "mainPage";
     startButton.innerHTML = "Начать";
     pageStart.append(ballFirst, ballSecond, startTitle, startButton);
+    startTitle.append(startSpanTitle);
 
     const ribbonCont = document.querySelector(".links:nth-child(1)");
     ribbonCont.className = "links";
@@ -26,6 +29,8 @@ export class MainPage extends Page {
 
     const ribbonCont3 = document.querySelector(".links:nth-child(3)");
     ribbonCont3.className = "links";
+
+    this.container.append(pageStart);
   }
 
   render() {

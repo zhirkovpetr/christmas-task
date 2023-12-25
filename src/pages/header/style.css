@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-#header {
+.header {
   position: relative;
   background-color: #121C1E;
   z-index: 10;
@@ -72,23 +72,12 @@
     141deg) brightness(89%) contrast(90%);
 }
 
-
-
-
-
-
-
-
-
-
-
-.input-search{
+.search-favorites {
   display: flex;
   align-items: center;
 }
 
-#search{
-  outline: 0;
+.input-search {
   width: 380px;
   height: 40px;
   padding: 5px 25px;
@@ -105,7 +94,7 @@
   backdrop-filter: blur(6px);
 }
 
-#select{
+.favorites{
   width: 48px;
   height: 60px;
   background-image: url(/src/assets/svg/ball-2.svg);
@@ -115,7 +104,7 @@
   transition: .3s;
 }
 
-#select span {
+.favorites span {
   display: inline-block;
   min-width: 40px;
   height: 40px;

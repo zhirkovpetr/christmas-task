@@ -35,12 +35,18 @@ export class Header extends Components {
     inputSearch.name = "search";
     inputSearch.placeholder = "Поиск";
     inputSearch.id = "search";
+    inputSearch.autocomplete = "off";
 
     const favorites = document.createElement("div");
     favorites.classList.add("favorites");
+    const spanFavorites = document.createElement("span");
+    spanFavorites.innerHTML = "0";
+    favorites.append(spanFavorites)
     searchAndFavorites.classList.add("search-favorites");
     wrapperHeader.classList.add("wrapper");
-    wrapperHeader.append(pageButtons, searchAndFavorites, inputSearch, favorites);
+    wrapperHeader.append(pageButtons, searchAndFavorites);
+    searchAndFavorites.append(inputSearch, favorites);
+
 
     Buttons.forEach((button) => {
       const buttonHTML = document.createElement("a");
