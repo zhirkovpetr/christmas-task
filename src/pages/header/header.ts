@@ -41,12 +41,11 @@ export class Header extends Components {
     favorites.classList.add("favorites");
     const spanFavorites = document.createElement("span");
     spanFavorites.innerHTML = "0";
-    favorites.append(spanFavorites)
+    favorites.append(spanFavorites);
     searchAndFavorites.classList.add("search-favorites");
     wrapperHeader.classList.add("wrapper");
     wrapperHeader.append(pageButtons, searchAndFavorites);
     searchAndFavorites.append(inputSearch, favorites);
-
 
     Buttons.forEach((button) => {
       const buttonHTML = document.createElement("a");
