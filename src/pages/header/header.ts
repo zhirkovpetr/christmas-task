@@ -33,6 +33,7 @@ export class Header extends Components {
     inputSearch.classList.add("input-search");
     inputSearch.type = "search";
     inputSearch.name = "search";
+    inputSearch.innerHTML = "";
     inputSearch.placeholder = "Поиск";
     inputSearch.id = "search";
     inputSearch.autocomplete = "off";
@@ -54,6 +55,7 @@ export class Header extends Components {
       buttonHTML.classList.add(`links`);
       pageButtons.append(buttonHTML);
     });
+
     this.container.append(wrapperHeader);
   }
 
