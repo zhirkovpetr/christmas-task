@@ -255,7 +255,6 @@ export class Toys extends Page {
     const target = event.target as HTMLElement & { dataset: Record<string, string> };
 
     const dataId = target.dataset.id;
-    console.log(dataId);
 
     if (this.searchParams.shapes.includes(dataId)) {
       target.classList.remove("active");
@@ -278,104 +277,40 @@ export class Toys extends Page {
       target.classList.add("active");
       this.searchParams.size.push(dataId);
     }
-
-    let result = data;
-    result = result.filter((item) => {
+    let params = [...data];
+    params = params.filter((item) => {
       if (this.searchParams.shapes.length > 0) {
         return this.searchParams.shapes.includes(item.shape);
       }
       return true;
     });
-    console.log("1", result);
+    /*console.log("1", result);*/
 
-    result = result.filter((item) => {
+    params = params.filter((item) => {
       if (this.searchParams.color.length > 0) {
         return this.searchParams.color.includes(item.color);
       }
       return true;
     });
-    console.log("2", result);
+    /*console.log("2", result);*/
 
-    result = result.filter((item) => {
+    params = params.filter((item) => {
       if (this.searchParams.size.length > 0) {
         return this.searchParams.size.includes(item.size);
       }
       return true;
     });
-    console.log("3", result);
+
+    const searchData = document.querySelector("#search") as HTMLInputElement;
+    const val = searchData.value.trim().toLowerCase();
+    if (val) {
+      params = params.filter((el) => el.name.toLowerCase().includes(val));
+    }
+    /*console.log("3", result);*/
 
     this.removeCards(cards);
-    this.renderCards(result);
+    this.renderCards(params);
   };
-
-  /*filterShape(items: IToy[], shape: string[]): IToy[] {
-    const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll(".toys");
-
-    let shapeArr = items;
-    shapeArr = shapeArr.filter((item) => {
-      if (shape.length > 0) {
-        return shape.includes(item.shape);
-      }
-      return true;
-    });
-    this.removeCards(cards);
-    this.renderCards(shapeArr);
-    return shapeArr;
-  }*/
-
-  /*colorShape(items: IToy[], shape: string[]): IToy[] {
-    const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll(".toys");
-
-    let colorArr = items;
-    colorArr = colorArr.filter((item) => {
-      if (shape.length > 0) {
-        return shape.includes(item.color);
-      }
-      return true;
-    });
-    this.removeCards(cards);
-    this.renderCards(colorArr);
-    return colorArr;
-  }*/
-
-  /*clickShape = (event: Event) => {
-    const target = event.target as HTMLElement & { dataset: Record<string, string> };
-    const shape = target.dataset.id;
-    if (filterShapes.includes(shape)) {
-      target.classList.remove("active");
-      filterShapes.splice(filterShapes.indexOf(shape), 1);
-    } else {
-      target.classList.add("active");
-      console.log(shape);
-      filterShapes.push(shape);
-    }
-    this.filterShape(data, filterShapes);
-  };*/
-
-  /* clickRibbon = (event: Event) => {
-    const target = event.target as HTMLElement;
-    console.log(target);
-    const className = target.getAttribute("class");
-    if (className === "ribbon") {
-      target.className = "ribbon active";
-    } else {
-      target.className = "ribbon";
-    }
-  };*/
-
-  /* clickColor = (event: Event) => {
-    const target = event.target as HTMLElement & { dataset: Record<string, string> };
-    const shape = target.dataset.id;
-    if (filterColor.includes(shape)) {
-      target.classList.remove("active");
-      filterColor.splice(filterColor.indexOf(shape), 1);
-    } else {
-      target.classList.add("active");
-      console.log(shape);
-      filterColor.push(shape);
-    }
-    this.colorShape(data, filterColor);
-  };*/
 
   renderCards(card: IToy[]) {
     const cardsWrapper = document.querySelector(".cards");
@@ -458,7 +393,7 @@ export class Toys extends Page {
     const favoriteCount = document.querySelector(".favorite");
     favoriteCount.addEventListener("click", this.clickFilter);
 
-    /*const ribbonCont = document.querySelector(".ribbon-container");
-    ribbonCont.addEventListener("click", this.clickRibbon);*/
+    const input = document.querySelector("#search");
+    input.addEventListener("keyup", this.clickFilter);
   }
 }
