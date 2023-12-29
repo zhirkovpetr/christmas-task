@@ -14,18 +14,38 @@ const FilterButtons = [
 
 const SizeButtons = [{ size: "большой" }, { size: "средний" }, { size: "малый" }];
 const Options = [
-  { text: "По названию от «А» до «Я»" },
-  { text: "По названию от «Я» до «А»" },
-  { text: "По количеству по возрастанию" },
-  { text: "По количеству по убыванию" },
+  { text: "По названию от «А» до «Я»",  value: "sort-name-max" },
+  { text: "По названию от «Я» до «А»",  value: "sort-name-min" },
+  { text: "По количеству по возрастанию", value: "sort-count-max" },
+  { text: "По количеству по убыванию",  value: "sort-count-min" },
 ];
 
 export class Toys extends Page {
-  searchParams: { shapes: string[]; color: string[]; size: string[] };
+  searchParams: {
+    shapes: string[];
+    color: string[];
+    size: string[];
+    favorite: boolean[];
+    minQuantity: number;
+    maxQuantity: number;
+    minYear: number;
+    maxYear: number;
+    optionsValue: string;
+  };
 
   constructor(id: string) {
     super(id);
-    this.searchParams = { shapes: [], color: [], size: [] };
+    this.searchParams = {
+      shapes: [],
+      color: [],
+      size: [],
+      favorite: [],
+      minQuantity: 1,
+      maxQuantity: 12,
+      minYear: 1940,
+      maxYear: 2020,
+      optionsValue: "",
+    };
   }
 
   renderWrapper() {
@@ -92,7 +112,7 @@ export class Toys extends Page {
     favoriteInput.id = "favorite-input";
     favoriteCount.append(favoriteInput);
     const favoriteLabel = document.createElement("label");
-    favoriteLabel.setAttribute("for", "check-favorite");
+    favoriteLabel.setAttribute("for", "favorite-input");
     favoriteLabel.className = "favorite-input-label";
     favoriteCount.append(favoriteLabel);
 
@@ -169,6 +189,8 @@ export class Toys extends Page {
     Options.forEach((option) => {
       const optionFilter = document.createElement("option");
       optionFilter.innerHTML = option.text;
+      optionFilter.value = option.value;
+      optionFilter.disabled = false;
       select.append(optionFilter);
     });
     filterBox3.append(select);
@@ -220,9 +242,9 @@ export class Toys extends Page {
       const favorite = document.createElement("p");
       favorite.classList.add("favorite");
       if (toys.favorite) {
-        favorite.innerHTML = "Люимая: Да";
+        favorite.innerHTML = "Любимая: Да";
       } else {
-        favorite.innerHTML = "Люимая: Нет";
+        favorite.innerHTML = "Любимая: Нет";
       }
 
       const ribbonContainer = document.createElement("div");
@@ -301,12 +323,89 @@ export class Toys extends Page {
       return true;
     });
 
+    const favoriteInput = document.querySelector("#favorite-input") as HTMLInputElement;
+    console.log(favoriteInput.checked);
+    if (favoriteInput.checked) {
+      // фильтр по любимым;
+      this.searchParams.favorite.push(true);
+      params = params.filter((item) => {
+        if (this.searchParams.favorite.length > 0) {
+          return this.searchParams.favorite.includes(item.favorite);
+        }
+        return true;
+      });
+    }
+
+    this.searchParams.minQuantity = Number((document.querySelector(".min-quantity") as HTMLInputElement).value);
+    this.searchParams.maxQuantity = Number((document.querySelector(".max-quantity") as HTMLInputElement).value);
+    this.searchParams.minYear = Number((document.querySelector(".min-year") as HTMLInputElement).value);
+    this.searchParams.maxYear = Number((document.querySelector(".max-year") as HTMLInputElement).value);
+
+    params = params.filter((item) => {
+      // фильтр по количеству
+      return Number(item.count) >= this.searchParams.minQuantity && Number(item.count) <= this.searchParams.maxQuantity;
+    });
+
+    params = params.filter((item) => {
+      // фильтр по годам
+      return Number(item.year) >= this.searchParams.minYear && Number(item.year) <= this.searchParams.maxYear;
+    });
+
+    const select = (document.querySelector(".sort-select") as HTMLSelectElement).options.selectedIndex;
+    this.searchParams.optionsValue = (document.querySelector(".sort-select") as HTMLSelectElement).options[
+      select
+      ].value;
+
+    params = params.filter(() => {
+      if (this.searchParams.optionsValue === "sort-name-max") {
+        return params.sort(function (x: { name: string }, y: { name: string }) {
+          if (x.name < y.name) {
+            return -1;
+          }
+          if (x.name > y.name) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (this.searchParams.optionsValue === "sort-name-min") {
+        return params.sort(function (x: { name: string }, y: { name: string }) {
+          if (x.name > y.name) {
+            return -1;
+          }
+          if (x.name < y.name) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (this.searchParams.optionsValue === "sort-count-max") {
+        return params.sort(function (x: { count: string }, y: { count: string }) {
+          if (Number(x.count) < Number(y.count)) {
+            return -1;
+          }
+          if (Number(x.count) > Number(y.count)) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (this.searchParams.optionsValue === "sort-count-min") {
+        return params.sort(function (x: { count: string }, y: { count: string }) {
+          if (Number(x.count) > Number(y.count)) {
+            return -1;
+          }
+          if (Number(x.count) < Number(y.count)) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+      return true;
+    });
+
     const searchData = document.querySelector("#search") as HTMLInputElement;
     const val = searchData.value.trim().toLowerCase();
     if (val) {
       params = params.filter((el) => el.name.toLowerCase().includes(val));
     }
-    /*console.log("3", result);*/
 
     this.removeCards(cards);
     this.renderCards(params);
@@ -381,7 +480,7 @@ export class Toys extends Page {
   afterRender() {
     quantitySlider();
     yearSlider();
-    const shapeCount = document.querySelector(".shape-container");
+    const shapeCount = document.querySelector(".form-group");
     shapeCount.addEventListener("click", this.clickFilter);
 
     const colorCount = document.querySelector(".color");
@@ -390,10 +489,25 @@ export class Toys extends Page {
     const sizeCount = document.querySelector(".size");
     sizeCount.addEventListener("click", this.clickFilter);
 
-    const favoriteCount = document.querySelector(".favorite");
+    const favoriteCount = document.querySelector(".favorite-input");
     favoriteCount.addEventListener("click", this.clickFilter);
 
     const input = document.querySelector("#search");
     input.addEventListener("keyup", this.clickFilter);
+
+    const minQuantity = document.querySelector('.min-quantity');
+    minQuantity.addEventListener('change', this.clickFilter);
+
+    const maxQuantity = document.querySelector('.max-quantity');
+    maxQuantity.addEventListener('change', this.clickFilter);
+
+    const minYear = document.querySelector('.min-year');
+    minYear.addEventListener('change', this.clickFilter);
+
+    const maxYear = document.querySelector('.max-year');
+    maxYear.addEventListener('change', this.clickFilter);
+
+    const sortSelect = document.querySelector('.sort-select');
+    sortSelect.addEventListener('change', this.clickFilter);
   }
 }
