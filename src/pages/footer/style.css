@@ -4,7 +4,7 @@
 
 #footer {
   background-color: #121C1E;
-  margin: 10px auto;
+  margin: 0 auto;
 }
 
 #footer-container{
@@ -14,8 +14,7 @@
   align-items: center;
   width: 100%;
   max-width: 1600px;
-
-  margin: 10px auto;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -38,6 +37,12 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+#footer_rs:hover, #footer_gh:hover {
+  filter: invert(57%) sepia(100%) saturate(329%) hue-rotate(
+    141deg) brightness(89%) contrast(90%);
+}
+
 #reserved_footer {
   align-items: center;
   display: flex;
