@@ -12,19 +12,42 @@ const FilterButtons = [
   { filter: "фигурка", color: "зелёный" },
 ];
 
-const SizeButtons = [{ size: "big" }, { size: "middle" }, { size: "low" }];
+const SizeButtons = [{ size: "большой" }, { size: "средний" }, { size: "малый" }];
 const Options = [
-  { text: "По названию от «А» до «Я»" },
-  { text: "По названию от «Я» до «А»" },
-  { text: "По количеству по возрастанию" },
-  { text: "По количеству по убыванию" },
+  { text: "По названию от «А» до «Я»",  value: "sort-name-max" },
+  { text: "По названию от «Я» до «А»",  value: "sort-name-min" },
+  { text: "По количеству по возрастанию", value: "sort-count-max" },
+  { text: "По количеству по убыванию",  value: "sort-count-min" },
 ];
 
-const filterShapes: Array<string> = [];
-const filterColor: Array<string> = [];
-const clickRibbon: Array<string> = [];
-
 export class Toys extends Page {
+  searchParams: {
+    shapes: string[];
+    color: string[];
+    size: string[];
+    favorite: boolean[];
+    minQuantity: number;
+    maxQuantity: number;
+    minYear: number;
+    maxYear: number;
+    optionsValue: string;
+  };
+
+  constructor(id: string) {
+    super(id);
+    this.searchParams = {
+      shapes: [],
+      color: [],
+      size: [],
+      favorite: [],
+      minQuantity: 1,
+      maxQuantity: 12,
+      minYear: 1940,
+      maxYear: 2020,
+      optionsValue: "",
+    };
+  }
+
   renderWrapper() {
     const wrapperMain = document.createElement("div") as HTMLDivElement;
     wrapperMain.classList.add("main-wrapper");
@@ -56,6 +79,7 @@ export class Toys extends Page {
     FilterButtons.forEach((btn) => {
       const btnShape = document.createElement("button");
       btnShape.dataset.id = btn.filter;
+      btnShape.className = "btn-shape";
       shapeContainer.append(btnShape);
     });
     const colorBox = document.createElement("div");
@@ -63,6 +87,7 @@ export class Toys extends Page {
     colorBox.innerHTML = "Цвет: ";
     FilterButtons.forEach((btn) => {
       const btnColor = document.createElement("button");
+      btnColor.className = "btn-color";
       btnColor.dataset.id = btn.color;
       colorBox.append(btnColor);
     });
@@ -71,6 +96,7 @@ export class Toys extends Page {
     sizeBox.innerHTML = "Размер: ";
     SizeButtons.forEach((btn) => {
       const btnSize = document.createElement("button");
+      btnSize.className = "btn-size";
       btnSize.dataset.id = btn.size;
       sizeBox.append(btnSize);
     });
@@ -86,7 +112,7 @@ export class Toys extends Page {
     favoriteInput.id = "favorite-input";
     favoriteCount.append(favoriteInput);
     const favoriteLabel = document.createElement("label");
-    favoriteLabel.setAttribute("for", "check-favorite");
+    favoriteLabel.setAttribute("for", "favorite-input");
     favoriteLabel.className = "favorite-input-label";
     favoriteCount.append(favoriteLabel);
 
@@ -163,6 +189,8 @@ export class Toys extends Page {
     Options.forEach((option) => {
       const optionFilter = document.createElement("option");
       optionFilter.innerHTML = option.text;
+      optionFilter.value = option.value;
+      optionFilter.disabled = false;
       select.append(optionFilter);
     });
     filterBox3.append(select);
@@ -214,9 +242,9 @@ export class Toys extends Page {
       const favorite = document.createElement("p");
       favorite.classList.add("favorite");
       if (toys.favorite) {
-        favorite.innerHTML = "Люимая: Да";
+        favorite.innerHTML = "Любимая: Да";
       } else {
-        favorite.innerHTML = "Люимая: Нет";
+        favorite.innerHTML = "Любимая: Нет";
       }
 
       const ribbonContainer = document.createElement("div");
@@ -244,91 +272,143 @@ export class Toys extends Page {
     this.container.append(wrapperMain);
   }
 
-  /*filter(items: IToy[], shape: string[]): IToy[] {
+  clickFilter = (event: Event) => {
     const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll(".toys");
+    const target = event.target as HTMLElement & { dataset: Record<string, string> };
 
-    let shapeArr = items;
-    shapeArr = shapeArr.filter((item) => {
-      if (shape.length > 0) {
-        if(shape[0] === "шар" ||  shape[0] === "колокольчик" || shape[0] === "шишка" || shape[0] === "снежинка" || shape[0] === "фигурка") {
-          return shape.includes(item.shape);
+    const dataId = target.dataset.id;
+
+    if (this.searchParams.shapes.includes(dataId)) {
+      target.classList.remove("active");
+      this.searchParams.shapes.splice(this.searchParams.shapes.indexOf(dataId), 1);
+    } else if (target.classList.contains("btn-shape")) {
+      target.classList.add("active");
+      this.searchParams.shapes.push(dataId);
+    }
+    if (this.searchParams.color.includes(dataId)) {
+      target.classList.remove("active");
+      this.searchParams.color.splice(this.searchParams.color.indexOf(dataId), 1);
+    } else if (target.classList.contains("btn-color")) {
+      target.classList.add("active");
+      this.searchParams.color.push(dataId);
+    }
+    if (this.searchParams.size.includes(dataId)) {
+      target.classList.remove("active");
+      this.searchParams.size.splice(this.searchParams.size.indexOf(dataId), 1);
+    } else if (target.classList.contains("btn-size")) {
+      target.classList.add("active");
+      this.searchParams.size.push(dataId);
+    }
+    let params = [...data];
+    params = params.filter((item) => {
+      if (this.searchParams.shapes.length > 0) {
+        return this.searchParams.shapes.includes(item.shape);
+      }
+      return true;
+    });
+    /*console.log("1", result);*/
+
+    params = params.filter((item) => {
+      if (this.searchParams.color.length > 0) {
+        return this.searchParams.color.includes(item.color);
+      }
+      return true;
+    });
+    /*console.log("2", result);*/
+
+    params = params.filter((item) => {
+      if (this.searchParams.size.length > 0) {
+        return this.searchParams.size.includes(item.size);
+      }
+      return true;
+    });
+
+    const favoriteInput = document.querySelector("#favorite-input") as HTMLInputElement;
+    console.log(favoriteInput.checked);
+    if (favoriteInput.checked) {
+      // фильтр по любимым;
+      this.searchParams.favorite.push(true);
+      params = params.filter((item) => {
+        if (this.searchParams.favorite.length > 0) {
+          return this.searchParams.favorite.includes(item.favorite);
         }
+        return true;
+      });
+    }
 
+    this.searchParams.minQuantity = Number((document.querySelector(".min-quantity") as HTMLInputElement).value);
+    this.searchParams.maxQuantity = Number((document.querySelector(".max-quantity") as HTMLInputElement).value);
+    this.searchParams.minYear = Number((document.querySelector(".min-year") as HTMLInputElement).value);
+    this.searchParams.maxYear = Number((document.querySelector(".max-year") as HTMLInputElement).value);
+
+    params = params.filter((item) => {
+      // фильтр по количеству
+      return Number(item.count) >= this.searchParams.minQuantity && Number(item.count) <= this.searchParams.maxQuantity;
+    });
+
+    params = params.filter((item) => {
+      // фильтр по годам
+      return Number(item.year) >= this.searchParams.minYear && Number(item.year) <= this.searchParams.maxYear;
+    });
+
+    const select = (document.querySelector(".sort-select") as HTMLSelectElement).options.selectedIndex;
+    this.searchParams.optionsValue = (document.querySelector(".sort-select") as HTMLSelectElement).options[
+      select
+      ].value;
+
+    params = params.filter(() => {
+      if (this.searchParams.optionsValue === "sort-name-max") {
+        return params.sort(function (x: { name: string }, y: { name: string }) {
+          if (x.name < y.name) {
+            return -1;
+          }
+          if (x.name > y.name) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (this.searchParams.optionsValue === "sort-name-min") {
+        return params.sort(function (x: { name: string }, y: { name: string }) {
+          if (x.name > y.name) {
+            return -1;
+          }
+          if (x.name < y.name) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (this.searchParams.optionsValue === "sort-count-max") {
+        return params.sort(function (x: { count: string }, y: { count: string }) {
+          if (Number(x.count) < Number(y.count)) {
+            return -1;
+          }
+          if (Number(x.count) > Number(y.count)) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (this.searchParams.optionsValue === "sort-count-min") {
+        return params.sort(function (x: { count: string }, y: { count: string }) {
+          if (Number(x.count) > Number(y.count)) {
+            return -1;
+          }
+          if (Number(x.count) < Number(y.count)) {
+            return 1;
+          }
+          return 0;
+        });
       }
       return true;
     });
-    this.removeCards(cards);
-    this.renderCards(shapeArr);
-    return shapeArr;
-  }*/
 
-  filterShape(items: IToy[], shape: string[]): IToy[] {
-    const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll(".toys");
-
-    let shapeArr = items;
-    shapeArr = shapeArr.filter((item) => {
-      if (shape.length > 0) {
-        return shape.includes(item.shape);
-      }
-      return true;
-    });
-    this.removeCards(cards);
-    this.renderCards(shapeArr);
-    return shapeArr;
-  }
-
-  colorShape(items: IToy[], shape: string[]): IToy[] {
-    const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll(".toys");
-
-    let colorArr = items;
-    colorArr = colorArr.filter((item) => {
-      if (shape.length > 0) {
-        return shape.includes(item.color);
-      }
-      return true;
-    });
-    this.removeCards(cards);
-    this.renderCards(colorArr);
-    return colorArr;
-  }
-
-  clickShape = (event: Event) => {
-    const target = event.target as HTMLElement & { dataset: Record<string, string> };
-    const shape = target.dataset.id;
-    if (filterShapes.includes(shape)) {
-      target.classList.remove("active");
-      filterShapes.splice(filterShapes.indexOf(shape), 1);
-    } else {
-      target.classList.add("active");
-      console.log(shape);
-      filterShapes.push(shape);
+    const searchData = document.querySelector("#search") as HTMLInputElement;
+    const val = searchData.value.trim().toLowerCase();
+    if (val) {
+      params = params.filter((el) => el.name.toLowerCase().includes(val));
     }
-    this.filterShape(data, filterShapes);
-  };
 
-  clickRibbon = (event: Event) => {
-    const target = event.target as HTMLElement;
-    console.log(target);
-    const className = target.getAttribute("class");
-    if (className === "ribbon") {
-      target.className = "ribbon active";
-    } else {
-      target.className = "ribbon";
-    }
-  };
-
-  clickColor = (event: Event) => {
-    const target = event.target as HTMLElement & { dataset: Record<string, string> };
-    const shape = target.dataset.id;
-    if (filterColor.includes(shape)) {
-      target.classList.remove("active");
-      filterColor.splice(filterColor.indexOf(shape), 1);
-    } else {
-      target.classList.add("active");
-      console.log(shape);
-      filterColor.push(shape);
-    }
-    this.colorShape(data, filterColor);
+    this.removeCards(cards);
+    this.renderCards(params);
   };
 
   renderCards(card: IToy[]) {
@@ -400,13 +480,34 @@ export class Toys extends Page {
   afterRender() {
     quantitySlider();
     yearSlider();
-    const shapeCont = document.querySelector(".shape");
-    shapeCont.addEventListener("click", this.clickShape);
+    const shapeCount = document.querySelector(".form-group");
+    shapeCount.addEventListener("click", this.clickFilter);
 
-    const colorCont = document.querySelector(".color");
-    colorCont.addEventListener("click", this.clickColor);
+    const colorCount = document.querySelector(".color");
+    colorCount.addEventListener("click", this.clickFilter);
 
-    const ribbonCont = document.querySelector(".ribbon-container");
-    ribbonCont.addEventListener("click", this.clickRibbon);
+    const sizeCount = document.querySelector(".size");
+    sizeCount.addEventListener("click", this.clickFilter);
+
+    const favoriteCount = document.querySelector(".favorite-input");
+    favoriteCount.addEventListener("click", this.clickFilter);
+
+    const input = document.querySelector("#search");
+    input.addEventListener("keyup", this.clickFilter);
+
+    const minQuantity = document.querySelector('.min-quantity');
+    minQuantity.addEventListener('change', this.clickFilter);
+
+    const maxQuantity = document.querySelector('.max-quantity');
+    maxQuantity.addEventListener('change', this.clickFilter);
+
+    const minYear = document.querySelector('.min-year');
+    minYear.addEventListener('change', this.clickFilter);
+
+    const maxYear = document.querySelector('.max-year');
+    maxYear.addEventListener('change', this.clickFilter);
+
+    const sortSelect = document.querySelector('.sort-select');
+    sortSelect.addEventListener('change', this.clickFilter);
   }
 }

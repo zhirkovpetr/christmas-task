@@ -33,6 +33,7 @@ export class Header extends Components {
     inputSearch.classList.add("input-search");
     inputSearch.type = "search";
     inputSearch.name = "search";
+    inputSearch.innerHTML = "";
     inputSearch.placeholder = "Поиск";
     inputSearch.id = "search";
     inputSearch.autocomplete = "off";
@@ -41,12 +42,11 @@ export class Header extends Components {
     favorites.classList.add("favorites");
     const spanFavorites = document.createElement("span");
     spanFavorites.innerHTML = "0";
-    favorites.append(spanFavorites)
+    favorites.append(spanFavorites);
     searchAndFavorites.classList.add("search-favorites");
     wrapperHeader.classList.add("wrapper");
     wrapperHeader.append(pageButtons, searchAndFavorites);
     searchAndFavorites.append(inputSearch, favorites);
-
 
     Buttons.forEach((button) => {
       const buttonHTML = document.createElement("a");
@@ -55,6 +55,7 @@ export class Header extends Components {
       buttonHTML.classList.add(`links`);
       pageButtons.append(buttonHTML);
     });
+
     this.container.append(wrapperHeader);
   }
 
