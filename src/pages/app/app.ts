@@ -6,12 +6,6 @@ import { Page } from "../../core/templates/pages";
 import { Toys } from "../toys/toys";
 import { Game } from "../game/game";
 
-/*export const enum PageIds {
-  MainPage = "main-page",
-  ToysPage = "toys-page",
-  GamePage = "game-page",
-}*/
-
 export class App {
   private static container: HTMLElement = document.body;
 
@@ -75,31 +69,5 @@ export class App {
     }
   }
 }
-
-/*class App {
-  private container: HTMLElement;
-
-  private header: Header;
-
-  private main: Main;
-
-  private footer: Footer;
-
-  constructor() {
-    this.container = document.body;
-    this.header = new Header("header");
-    this.main = new Main("main");
-    this.footer = new Footer("footer");
-  }
-
-  run() {
-    const headerHTML = this.header.render();
-    const mainHTML = this.main.render();
-    const footerHTML = this.footer.render();
-    this.container.append(headerHTML);
-    this.container.append(mainHTML);
-    this.container.append(footerHTML);
-  }
-}*/
 
 export default App;
