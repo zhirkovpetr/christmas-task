@@ -213,7 +213,7 @@ export class Toys extends Page {
 
       const imageCard = document.createElement("img");
       imageCard.classList.add("toys-img");
-      imageCard.src = `/src/assets/toys/${toys.num}.webp`;
+      imageCard.src = `src/assets/toys/${toys.num}.webp`;
       imageCard.alt = "toy";
 
       const cardDescCount = document.createElement("div");
@@ -422,7 +422,7 @@ export class Toys extends Page {
 
       const imageCard = document.createElement("img");
       imageCard.classList.add("toys-img");
-      imageCard.src = `/src/assets/toys/${item.num}.webp`;
+      imageCard.src = `src/assets/toys/${item.num}.webp`;
       imageCard.alt = "toy";
 
       const cardDescCount = document.createElement("div");
