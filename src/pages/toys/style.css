@@ -388,13 +388,10 @@ output {
   width: 0;
 }
 
-.ribbon.active {
-  background: #db8624;
+.active .ribbon {
+  background: #CBB77A;
 }
 
-.ribbon.active:after {
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
-  border-left: 15px solid #db8624;
-  right: -15px;
+.cards .active .ribbon:after {
+  border-left: 15px solid #CBB77A;
 }
