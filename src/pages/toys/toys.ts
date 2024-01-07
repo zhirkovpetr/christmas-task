@@ -14,10 +14,10 @@ const FilterButtons = [
 
 const SizeButtons = [{ size: "большой" }, { size: "средний" }, { size: "малый" }];
 const Options = [
-  { text: "По названию от «А» до «Я»",  value: "sort-name-max" },
-  { text: "По названию от «Я» до «А»",  value: "sort-name-min" },
+  { text: "По названию от «А» до «Я»", value: "sort-name-max" },
+  { text: "По названию от «Я» до «А»", value: "sort-name-min" },
   { text: "По количеству по возрастанию", value: "sort-count-max" },
-  { text: "По количеству по убыванию",  value: "sort-count-min" },
+  { text: "По количеству по убыванию", value: "sort-count-min" },
 ];
 
 export class Toys extends Page {
@@ -31,6 +31,7 @@ export class Toys extends Page {
     minYear: number;
     maxYear: number;
     optionsValue: string;
+    numbers: string[];
   };
 
   constructor(id: string) {
@@ -45,6 +46,7 @@ export class Toys extends Page {
       minYear: 1940,
       maxYear: 2020,
       optionsValue: "",
+      numbers: [],
     };
   }
 
@@ -213,7 +215,7 @@ export class Toys extends Page {
 
       const imageCard = document.createElement("img");
       imageCard.classList.add("toys-img");
-      imageCard.src = `src/assets/toys/${toys.num}.webp`;
+      imageCard.src = `./src/assets/toys/${toys.num}.webp`;
       imageCard.alt = "toy";
 
       const cardDescCount = document.createElement("div");
@@ -300,13 +302,13 @@ export class Toys extends Page {
       this.searchParams.size.push(dataId);
     }
     let params = [...data];
+
     params = params.filter((item) => {
       if (this.searchParams.shapes.length > 0) {
         return this.searchParams.shapes.includes(item.shape);
       }
       return true;
     });
-    /*console.log("1", result);*/
 
     params = params.filter((item) => {
       if (this.searchParams.color.length > 0) {
@@ -314,7 +316,6 @@ export class Toys extends Page {
       }
       return true;
     });
-    /*console.log("2", result);*/
 
     params = params.filter((item) => {
       if (this.searchParams.size.length > 0) {
@@ -324,7 +325,6 @@ export class Toys extends Page {
     });
 
     const favoriteInput = document.querySelector("#favorite-input") as HTMLInputElement;
-    console.log(favoriteInput.checked);
     if (favoriteInput.checked) {
       // фильтр по любимым;
       this.searchParams.favorite.push(true);
@@ -411,6 +411,28 @@ export class Toys extends Page {
     this.renderCards(params);
   };
 
+  clickToysCards = (event: Event) => {
+    const target = event.target as HTMLElement & { dataset: Record<string, string> };
+    const toyID = target.dataset.id;
+    if (target.classList.contains("active")) {
+      target.classList.remove("active");
+    } else {
+      target.classList.add("active");
+    }
+    if (this.searchParams.numbers.includes(toyID)) {
+      this.searchParams.numbers.splice(this.searchParams.numbers.indexOf(toyID), 1);
+    } else {
+      this.searchParams.numbers.push(toyID);
+    }
+    if (this.searchParams.numbers.length > 20) {
+      alert("Вы выбрали слишком много игрушек");
+      this.searchParams.numbers.splice(this.searchParams.numbers.indexOf(toyID), 1);
+      target.classList.remove("active");
+    }
+    const chosenToys = document.querySelector(".favorites span");
+    chosenToys.innerHTML = `${this.searchParams.numbers.length}`;
+  };
+
   renderCards(card: IToy[]) {
     const cardsWrapper = document.querySelector(".cards");
 
@@ -422,7 +444,7 @@ export class Toys extends Page {
 
       const imageCard = document.createElement("img");
       imageCard.classList.add("toys-img");
-      imageCard.src = `src/assets/toys/${item.num}.webp`;
+      imageCard.src = `./src/assets/toys/${item.num}.webp`;
       imageCard.alt = "toy";
 
       const cardDescCount = document.createElement("div");
@@ -456,9 +478,16 @@ export class Toys extends Page {
         favorite.innerHTML = "Люимая: Нет";
       }
 
+      const ribbonContainer = document.createElement("div");
+      ribbonContainer.classList.add("ribbon-container");
+
+      const ribbon = document.createElement("div");
+      ribbon.classList.add("ribbon");
+      ribbonContainer.append(ribbon);
+
       const tape = document.createElement("div");
       tape.classList.add("tape");
-      toy.append(infoCard, imageCard, cardDescCount);
+      toy.append(infoCard, imageCard, cardDescCount, ribbonContainer);
       cardDescCount.append(count, year, shape, color, size, favorite);
       toy.classList.add("toys");
       toy.dataset.id = item.num;
@@ -480,8 +509,11 @@ export class Toys extends Page {
   afterRender() {
     quantitySlider();
     yearSlider();
-    const shapeCount = document.querySelector(".form-group");
+    const shapeCount = document.querySelector(".shape-container");
     shapeCount.addEventListener("click", this.clickFilter);
+
+    const cards = document.querySelector(".cards");
+    cards.addEventListener("click", this.clickToysCards);
 
     const colorCount = document.querySelector(".color");
     colorCount.addEventListener("click", this.clickFilter);
@@ -495,19 +527,19 @@ export class Toys extends Page {
     const input = document.querySelector("#search");
     input.addEventListener("keyup", this.clickFilter);
 
-    const minQuantity = document.querySelector('.min-quantity');
-    minQuantity.addEventListener('change', this.clickFilter);
+    const minQuantity = document.querySelector(".min-quantity");
+    minQuantity.addEventListener("change", this.clickFilter);
 
-    const maxQuantity = document.querySelector('.max-quantity');
-    maxQuantity.addEventListener('change', this.clickFilter);
+    const maxQuantity = document.querySelector(".max-quantity");
+    maxQuantity.addEventListener("change", this.clickFilter);
 
-    const minYear = document.querySelector('.min-year');
-    minYear.addEventListener('change', this.clickFilter);
+    const minYear = document.querySelector(".min-year");
+    minYear.addEventListener("change", this.clickFilter);
 
-    const maxYear = document.querySelector('.max-year');
-    maxYear.addEventListener('change', this.clickFilter);
+    const maxYear = document.querySelector(".max-year");
+    maxYear.addEventListener("change", this.clickFilter);
 
-    const sortSelect = document.querySelector('.sort-select');
-    sortSelect.addEventListener('change', this.clickFilter);
+    const sortSelect = document.querySelector(".sort-select");
+    sortSelect.addEventListener("change", this.clickFilter);
   }
 }
