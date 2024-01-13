@@ -495,10 +495,23 @@ export class Toys extends Page {
     });
   }
 
+  resetButton = () => {
+    const wrapperMain = document.querySelector(".main-wrapper") as HTMLElement;
+    const chosenToys = document.querySelector(".favorites span");
+    chosenToys.innerHTML = "0";
+    this.removePage(wrapperMain);
+    this.renderWrapper();
+    this.afterRender();
+  };
+
   removeCards(card: NodeListOf<HTMLDivElement>) {
     card.forEach((element) => {
       element.remove();
     });
+  }
+
+  removePage(page: HTMLElement) {
+    page.remove();
   }
 
   render() {
@@ -509,6 +522,9 @@ export class Toys extends Page {
   afterRender() {
     quantitySlider();
     yearSlider();
+    const btnReset = document.querySelector(".reset");
+    btnReset.addEventListener("click", this.resetButton);
+
     const shapeCount = document.querySelector(".shape-container");
     shapeCount.addEventListener("click", this.clickFilter);
 
